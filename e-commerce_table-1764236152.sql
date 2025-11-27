@@ -1,3 +1,5 @@
+Create Database ECommerce
+
 CREATE TABLE Customers (
 Id int primary key IDENTITY,
 Name nvarchar(30) NOT NULL,
