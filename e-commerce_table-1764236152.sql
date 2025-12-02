@@ -51,3 +51,54 @@ CREATE TABLE ProductSuppliers (
 
 );
 
+
+
+CREATE TABLE COUNTRIES (
+	Id int primary key IDENTITY,
+	Name nvarchar(30) NOT NULL,
+);
+
+CREATE TABLE CITIES(
+	Id int primary key IDENTITY,
+	Name nvarchar(30) NOT NULL,
+	CountryId int foreign key References COUNTRIES(Id) ,
+)
+
+
+
+CREATE VIEW  CustomOrderSummary AS
+SELECT c.Id,o.Status, c.Name, COUNT(o.Id) AS OrderCount
+FROM Customers c
+INNER JOIN Orders o ON c.Id = o.Customer_Id
+WHERE o.Status > 5500
+GROUP BY c.Id,o.Status, c.Name
+
+
+select * from CustomOrderSummary 
+order by Id
+
+
+SELECT c.Id,o.Status, c.Name, COUNT(o.Id) AS OrderCount
+FROM Customers c
+INNER JOIN Orders o ON c.Id = o.Customer_Id
+GROUP BY c.Id,o.Status, c.Name
+order by c.Id;
+
+
+
+
+
+
+SELECT o.Id,o.Quantity, COUNT(o.Id) AS OrderCount
+FROM OrderItems o
+INNER JOIN Products p ON p.Id = o.ProductId
+GROUP BY o.Id,o.Quantity
+order by o.Id;
+
+
+
+SELECT SUM(OI.Quantity * OI.UnitPriceQuantity) AS GrandTotal
+FROM OrderItems OI
+GROUP BY OI.Id,OI.OrdersId,OI.Quantity,OI.UnitPriceQuantity
+order by OI.Id;
+
